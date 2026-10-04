@@ -215,6 +215,12 @@ function extractBlockState (name, path, full = false) {
       name = name.replace(/minecraft:/, '')
       const t = JSON.parse(fs.readFileSync(path + name + '.json', 'utf8'))
       if (full) return t
+      if (t.multipart) {
+        // fences, walls, panes, bars, vines, shelves...: no variants, only
+        // parts; the first is the base piece (a fence's post)
+        const firstPart = t.multipart[0].apply
+        return firstPart.model || firstPart[0].model
+      }
       const firstVariant = t.variants[Object.keys(t.variants)[0]]
       return firstVariant.model || firstVariant[0].model
     } catch (err) {
