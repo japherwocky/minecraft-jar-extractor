@@ -257,6 +257,8 @@ function extractModel (name, path, full = false) {
           case 'minecraft:model': return extractModel(t.model.model, path)
           case 'minecraft:condition': return extractModel(t.model.on_false.fallback.model || t.model.on_false.fallback.entries[0].model.model, path)
           case 'minecraft:range_dispatch': return extractModel(t.model.entries[0].model.model, path)
+          // 26.3 beds: a composite of their head and foot block models
+          case 'minecraft:composite': return extractModel(t.model.models[0].base || t.model.models[0].model, path)
           default: throw new Error('Unhandled type ' + t.model.type)
         }
       }
